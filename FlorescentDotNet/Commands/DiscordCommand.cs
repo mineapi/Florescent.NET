@@ -1,5 +1,7 @@
 ﻿using Discord.WebSocket;
+using FlorescentDotNet.Categories;
 using FlorescentDotNet.Database;
+using FlorescentDotNet.Util;
 
 namespace FlorescentDotNet.Commands
 {
@@ -8,9 +10,10 @@ namespace FlorescentDotNet.Commands
         public String Name { get; set; }
         public String Description { get; set; }
         public DiscordPermission PermissionLevel { get; set; }
-        
         public BotDatabase BotDatabase { get; }
         public Bot Bot { get; }
+
+        public string Category;
 
         public DiscordCommand(Bot bot)
         {

@@ -12,7 +12,7 @@ namespace FlorescentDotNet
         private String token;
         public DiscordSocketClient client;
 
-        private List<DiscordCommand> commands = new List<DiscordCommand>();
+        public List<DiscordCommand> commands = new List<DiscordCommand>();
 
         public BotDatabase Database;
 
@@ -88,7 +88,7 @@ namespace FlorescentDotNet
                         }
                         catch (Exception ex)
                         {
-                            Debug.WriteLine("There was an error executing a command.");
+                            Debug.WriteLine(ex);
                         }
                         
                         Console.WriteLine(String.Format("User {0} ran the command {1}", user.Username, command.Name)); //Log the command.
@@ -106,8 +106,8 @@ namespace FlorescentDotNet
             initCommands(); //Load commands.
 
             client.Ready += () => Ready(); //Set the ready event.
-            client.MessageReceived += (SocketMessage message) => MessageRecieved(message); //Set the message recieved event.
-            
+            client.MessageReceived += (SocketMessage message) => MessageRecieved(message); //Set the message received event.
+
             Console.WriteLine("Logging in.");
             await client.LoginAsync(TokenType.Bot, token, true); //Login.
             Console.WriteLine("Starting.");
@@ -122,6 +122,7 @@ namespace FlorescentDotNet
              * Add commands here.
              */
             commands.Add(new Settings(this));
+            commands.Add(new Help(this));
         }
     }
 }

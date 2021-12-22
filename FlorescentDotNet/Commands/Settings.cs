@@ -12,7 +12,8 @@ namespace FlorescentDotNet.Commands
         {
             this.Name = "settings";
             this.Description = "Update settings for guild.";
-            this.PermissionLevel = DiscordPermission.LOW;
+            this.PermissionLevel = DiscordPermission.HIGH;
+            this.Category = "Bot";
         }
 
         public async override Task Run(SocketMessage message, string[] args)
