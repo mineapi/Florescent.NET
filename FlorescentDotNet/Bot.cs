@@ -28,7 +28,7 @@ namespace FlorescentDotNet
 
         public Task Ready()
         {
-            Console.WriteLine("Ready!");
+            Logger.Log("Ready!");
             
             client.SetActivityAsync(new Game("Built on the Florescent.NET framework.", ActivityType.Playing)); //Set the bot status.
             
@@ -62,7 +62,6 @@ namespace FlorescentDotNet
                         IDisposable typingState = message.Channel.EnterTypingState(); //Start typing.
                         
                         SocketGuildUser user = (SocketGuildUser)message.Author; //Get the user as a guild user.
-                        Console.WriteLine(prefix);
                         try
                         {
                             switch (command.PermissionLevel)
@@ -91,7 +90,7 @@ namespace FlorescentDotNet
                             Debug.WriteLine(ex);
                         }
                         
-                        Console.WriteLine(String.Format("User {0} ran the command {1}", user.Username, command.Name)); //Log the command.
+                        Logger.Log(String.Format("User {0} ran the command {1}", user.Username, command.Name)); //Log the command.
                         
                         typingState.Dispose(); //Stop typing.
                     }
@@ -108,9 +107,9 @@ namespace FlorescentDotNet
             client.Ready += () => Ready(); //Set the ready event.
             client.MessageReceived += (SocketMessage message) => MessageRecieved(message); //Set the message received event.
 
-            Console.WriteLine("Logging in.");
+            Logger.Log("Logging in.");
             await client.LoginAsync(TokenType.Bot, token, true); //Login.
-            Console.WriteLine("Starting.");
+            Logger.Log("Starting.");
             await client.StartAsync(); //Start.
 
             await Task.Delay(-1); //Prevent process from ending.
@@ -123,6 +122,7 @@ namespace FlorescentDotNet
              */
             commands.Add(new Settings(this));
             commands.Add(new Help(this));
+            commands.Add(new Info(this));
         }
     }
 }

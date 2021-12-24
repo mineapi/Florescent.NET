@@ -36,7 +36,7 @@ public class Help : DiscordCommand
             await sendHelpMessage.AddReactionAsync(new Emoji(category.Emoji));
         }
 
-        new ReactionAwaiter(Bot.client, sendHelpMessage, message.Author, emoji =>
+        new ReactionAwaiter(Bot.client, sendHelpMessage, message.Author, (emoji) =>
         {
             bool successful = false;
             foreach (DiscordCommandCategory category in DiscordCommandCategory.Categories)
