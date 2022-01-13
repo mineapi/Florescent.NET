@@ -1,19 +1,20 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using FlorescentDotNet.Commands.Base;
 
 namespace FlorescentDotNet.Commands;
 
-public class Info : DiscordCommand
+public class Info : DiscordCommand, IDiscordMessageCommand
 {
     public Info(Bot bot) : base(bot)
     {
         this.Name = "info";
         this.Description = "Information about the bot.";
-        this.PermissionLevel = DiscordPermission.LOW;
+        this.RequiredPermissions = new[] {GuildPermission.SendMessages};
         this.Category = "general";
     }
-
-    public override async Task Run(SocketMessage message, string[] args)
+    
+    public async Task RunMessageCommand(SocketMessage message, string[] args)
     {
         EmbedBuilder infoEmbed = new EmbedBuilder();
         infoEmbed.Title = "Info";

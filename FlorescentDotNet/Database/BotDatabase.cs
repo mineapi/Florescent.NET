@@ -13,8 +13,7 @@ namespace FlorescentDotNet.Database
          */
 
         public static String DefaultPrefix = ";";
-        public static ulong DefaultAdminRole = 111111111111111111;
-        
+
         public BotDatabase(string path)
         {
             this._connection = new SQLiteConnection("Data Source=database.db;Version=3;New=True;Compress=True;");
@@ -35,8 +34,7 @@ namespace FlorescentDotNet.Database
             SQLiteCommand sqLiteCommand = _connection.CreateCommand();
             sqLiteCommand.CommandText = String.Format("CREATE TABLE IF NOT EXISTS \"{0}\"" + "(\n" +
                 "   id long PRIMARY KEY,\n" +
-                "   prefix string NOT NULL,\n" +
-                "   adminRole string NOT NULL\n" +
+                "   prefix string NOT NULL\n" +
                 ");", tableName);
             sqLiteCommand.ExecuteNonQuery();
         }

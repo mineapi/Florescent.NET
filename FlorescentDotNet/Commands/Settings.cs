@@ -1,22 +1,23 @@
 ﻿using System.Diagnostics;
 using Discord;
 using Discord.WebSocket;
+using FlorescentDotNet.Commands.Base;
 using FlorescentDotNet.Database;
 using FlorescentDotNet.Util;
 
 namespace FlorescentDotNet.Commands
 {
-    public class Settings : DiscordCommand
+    public class Settings : DiscordCommand, IDiscordMessageCommand
     {
         public Settings(Bot bot) : base(bot)
         {
             this.Name = "settings";
             this.Description = "Update settings for guild.";
-            this.PermissionLevel = DiscordPermission.HIGH;
+            this.RequiredPermissions = new[] {GuildPermission.ManageChannels};
             this.Category = "Bot";
         }
-
-        public async override Task Run(SocketMessage message, string[] args)
+        
+        public async Task RunMessageCommand(SocketMessage message, string[] args)
         {
             SocketGuildChannel targetChannel = (SocketGuildChannel) message.Channel;
             SocketGuild targetGuild = targetChannel.Guild;
@@ -58,18 +59,23 @@ namespace FlorescentDotNet.Commands
         {
             SocketGuildChannel guildChannel = (SocketGuildChannel) channel;
             
-            EmbedBuilder embed = new EmbedBuilder();
-            embed.Title = "Settings";
-            embed.Description = "These are the bot settings for this guild.";
-            embed.AddField("Prefix", settings.Prefix);
-            embed.AddField("High Level Role", settings.AdminRole);
-            embed.ThumbnailUrl = guildChannel.Guild.IconUrl;
-            embed.Color = Color.Purple;
-            embed.Footer = new EmbedFooterBuilder().WithText("Built on the Florescent.NET framework.")
-                .WithIconUrl(Bot.client.CurrentUser.GetAvatarUrl());
+            EmbedBuilder settingsEmbedBuilder = new EmbedBuilder()
+                .WithTitle("Settings")
+                .WithDescription("Modify bot configuration for this guild.")
+                .WithThumbnailUrl(guildChannel.Guild.IconUrl)
+                .WithColor(Color.Purple)
+                .WithFooter(new EmbedFooterBuilder().WithText("Built on the Florescent.NET framework.").WithIconUrl(Bot.client.CurrentUser.GetAvatarUrl()));
+
+            foreach (string setting in settings.Settings.Keys)
+            {
+                if (setting != "id")
+                {
+                    settingsEmbedBuilder.AddField(setting, settings.Settings[setting]);
+                }
+            }
 
 
-            await channel.SendMessageAsync("", false, embed.Build());
+            await channel.SendMessageAsync("", false, settingsEmbedBuilder.Build());
         }
 
         public GuildSettings GetGuildSettings(ulong guildId)

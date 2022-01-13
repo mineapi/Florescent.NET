@@ -3,21 +3,22 @@ using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
 using FlorescentDotNet.Categories;
+using FlorescentDotNet.Commands.Base;
 using FlorescentDotNet.Util;
 
 namespace FlorescentDotNet.Commands;
 
-public class Help : DiscordCommand
+public class Help : DiscordCommand, IDiscordMessageCommand
 {
     public Help(Bot bot) : base(bot)
     {
         this.Name = "help";
         this.Description = "View a list of bot commands.";
-        this.PermissionLevel = DiscordPermission.LOW;
+        this.RequiredPermissions = new[] {GuildPermission.SendMessages};
         this.Category = "General";
     }
-
-    public override async Task Run(SocketMessage message, string[] args)
+    
+    public async Task RunMessageCommand(SocketMessage message, string[] args)
     {
         EmbedBuilder helpEmbed = new EmbedBuilder();
         helpEmbed.Title = "Help";
@@ -76,6 +77,6 @@ public class Help : DiscordCommand
             }
             
             return Task.CompletedTask;
-        });
+        }, TimeSpan.FromSeconds(10));
     }
 }

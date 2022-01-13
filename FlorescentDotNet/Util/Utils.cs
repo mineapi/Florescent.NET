@@ -16,7 +16,21 @@ public class Utils
                 returnValue = true;
             }
         }
-
         return returnValue;
+    }
+
+    public static bool UserHasAllPermissions(SocketGuildUser user, GuildPermission[] permissions)
+    {
+        bool hasPermission = true;
+        
+        foreach (GuildPermission permission in permissions)
+        {
+            if (!user.GuildPermissions.Has(permission))
+            {
+                hasPermission = false;
+                break;
+            }
+        }
+        return hasPermission;
     }
 }

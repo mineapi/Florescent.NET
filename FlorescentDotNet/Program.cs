@@ -6,7 +6,7 @@ public class Program
     
     public static void Main(string[] args)
     {
-        bot = new Bot(args[0]);
+        bot = new Bot();
 
         bot.Start().GetAwaiter().GetResult();
     }
